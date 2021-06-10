@@ -23,6 +23,9 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * NameServer配置信息序列化包装类；
+ */
 public class KVConfigSerializeWrapperTest {
     private KVConfigSerializeWrapper kvConfigSerializeWrapper;
 

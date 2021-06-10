@@ -244,14 +244,19 @@ public class DefaultLitePullConsumerImpl implements MQConsumerInner {
                     this.defaultLitePullConsumer.changeInstanceNameToPID();
                 }
 
+                // 初始化MQClientFactory （封装了Netty网络通信相关的东西。Consumer启动后，需要跟Broker建立长连接，建立长连接之后，才能不停的通信拉取消息；）
                 initMQClientFactory();
 
+                // 初始化负载均衡 （一个组内的Consumer进行负载均衡，为Consumer分配消费的MessageQueue）
                 initRebalanceImpl();
 
+                // 初始化PullAPIWrapper （负责从Broker拉取消息）
                 initPullAPIWrapper();
 
+                // 初始化OffsetStore （用于维护offset消费进度。）
                 initOffsetStore();
 
+                // 启动
                 mQClientFactory.start();
 
                 startScheduleTask();

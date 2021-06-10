@@ -50,6 +50,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * NameServer处理请求的请求类，负责处理所有与NameServer交互的请求；
+ */
 public class DefaultRequestProcessorTest {
     private DefaultRequestProcessor defaultRequestProcessor;
 

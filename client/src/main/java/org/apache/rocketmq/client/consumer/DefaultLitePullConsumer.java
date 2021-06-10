@@ -202,7 +202,11 @@ public class DefaultLitePullConsumer extends ClientConfig implements LitePullCon
 
     @Override
     public void start() throws MQClientException {
+
+        // 设置ConsumerGroup
         setConsumerGroup(NamespaceUtil.wrapNamespace(this.getNamespace(), this.consumerGroup));
+
+        // 启动Consumer
         this.defaultLitePullConsumerImpl.start();
     }
 

@@ -31,6 +31,10 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
+
+/**
+ *  NameServer数据的载体，记录Broker，Topic等信息；
+ */
 public class RouteInfoManagerTest {
 
     private static RouteInfoManager routeInfoManager;

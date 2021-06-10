@@ -24,6 +24,10 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+/**
+ * 读取或变更NameServer的配置属性，加载NamesrvConfig中配置的配置文件到内存；
+ */
 public class KVConfigManagerTest extends NameServerInstanceTest {
     private KVConfigManager kvConfigManager;
 

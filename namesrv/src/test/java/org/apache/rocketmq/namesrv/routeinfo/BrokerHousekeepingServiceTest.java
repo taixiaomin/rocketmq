@@ -24,6 +24,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+/**
+ * BrokerHouseKeepingService实现ChannelEventListener接口，
+ * 可以说是通道在发送异常时的回调方法（Nameserver与Broker的连接通道在关闭、通道发送异常、通道空闲时）；
+ */
 public class BrokerHousekeepingServiceTest {
     private static BrokerHousekeepingService brokerHousekeepingService;
 
