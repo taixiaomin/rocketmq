@@ -66,6 +66,7 @@ public class Consumer {
          */
         consumer.registerMessageListener(new MessageListenerConcurrently() {
 
+            // 消息回调
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs,
                 ConsumeConcurrentlyContext context) {
