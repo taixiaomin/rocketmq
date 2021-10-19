@@ -90,7 +90,7 @@ public class PullMessageService extends ServiceThread {
     public void run() {
         log.info(this.getServiceName() + " service started");
 
-        // 不断的从pullRequestQueue获取消息
+        // 阻塞队列 拉取pullRequest请求
         while (!this.isStopped()) {
             try {
                 PullRequest pullRequest = this.pullRequestQueue.take();

@@ -374,6 +374,8 @@ public class NettyRemotingClient extends NettyRemotingAbstract implements Remoti
 
                 // 执行前钩子
                 doBeforeRpcHooks(addr, request);
+
+                // 时间统计 超时间应该减去执行时间 timeoutMillis - costTime
                 long costTime = System.currentTimeMillis() - beginStartTime;
                 if (timeoutMillis < costTime) {
                     throw new RemotingTimeoutException("invokeSync call timeout");

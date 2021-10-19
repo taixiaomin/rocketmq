@@ -142,6 +142,7 @@ public class PullAPIWrapper {
         }
     }
 
+    // pull核心实现   MQClientAPIImpl的上层封装
     public PullResult pullKernelImpl(
         final MessageQueue mq,
         final String subExpression,

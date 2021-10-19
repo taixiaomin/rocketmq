@@ -42,14 +42,18 @@ import org.apache.rocketmq.common.protocol.heartbeat.SubscriptionData;
 
 public abstract class RebalanceImpl {
     protected static final InternalLogger log = ClientLogger.getLog();
+    //
     protected final ConcurrentMap<MessageQueue, ProcessQueue> processQueueTable = new ConcurrentHashMap<MessageQueue, ProcessQueue>(64);
-    protected final ConcurrentMap<String/* topic */, Set<MessageQueue>> topicSubscribeInfoTable =
-        new ConcurrentHashMap<String, Set<MessageQueue>>();
-    protected final ConcurrentMap<String /* topic */, SubscriptionData> subscriptionInner =
-        new ConcurrentHashMap<String, SubscriptionData>();
+    // topic订阅信息table (一个topic对应多个MessageQueue)
+    protected final ConcurrentMap<String/* topic */, Set<MessageQueue>> topicSubscribeInfoTable = new ConcurrentHashMap<String, Set<MessageQueue>>();
+    protected final ConcurrentMap<String /* topic */, SubscriptionData> subscriptionInner = new ConcurrentHashMap<String, SubscriptionData>();
+    // 一个consumerGroup 对应多个实例
     protected String consumerGroup;
+    // 消息模式
     protected MessageModel messageModel;
+    // 负载均衡策略
     protected AllocateMessageQueueStrategy allocateMessageQueueStrategy;
+    // MQClient
     protected MQClientInstance mQClientFactory;
 
     public RebalanceImpl(String consumerGroup, MessageModel messageModel,
@@ -255,7 +259,10 @@ public abstract class RebalanceImpl {
                 break;
             }
             case CLUSTERING: {
+                // 一个topic对应多个MessageQueue
                 Set<MessageQueue> mqSet = this.topicSubscribeInfoTable.get(topic);
+
+                // 一个topic被多个consumerGroup订阅 获取当前consumerGroup下的实例
                 List<String> cidAll = this.mQClientFactory.findConsumerIdList(topic, consumerGroup);
                 if (null == mqSet) {
                     if (!topic.startsWith(MixAll.RETRY_GROUP_TOPIC_PREFIX)) {
@@ -278,6 +285,8 @@ public abstract class RebalanceImpl {
 
                     List<MessageQueue> allocateResult = null;
                     try {
+
+                        // 负载均衡分配MessageQueue（当前consumer-id对应所有的messageQueue中的一部分MessageQueue - 取决于哪种负载均衡算法）
                         allocateResult = strategy.allocate(
                             this.consumerGroup,
                             this.mQClientFactory.getClientId(),
@@ -294,6 +303,7 @@ public abstract class RebalanceImpl {
                         allocateResultSet.addAll(allocateResult);
                     }
 
+                    // 更新队列信息 并分发pull请求
                     boolean changed = this.updateProcessQueueTableInRebalance(topic, allocateResultSet, isOrder);
                     if (changed) {
                         log.info(
@@ -394,6 +404,7 @@ public abstract class RebalanceImpl {
             }
         }
 
+        // 分发pullRequest
         this.dispatchPullRequest(pullRequestList);
 
         return changed;
