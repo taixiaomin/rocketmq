@@ -87,6 +87,7 @@ public class RemotingCommand {
 
     public static RemotingCommand createRequestCommand(int code, CommandCustomHeader customHeader) {
         RemotingCommand cmd = new RemotingCommand();
+        // 利用code处理 接收请求时处理类（策略）
         cmd.setCode(code);
         cmd.customHeader = customHeader;
         setCmdVersion(cmd);
